@@ -2,13 +2,13 @@ import unittest
 
 from flask import json
 
-from app import api
+from app import app
 
 
 class TestAPI(unittest.TestCase):
 
     def setUp(self):
-        self.app = api.test_client()
+        self.app = app.test_client()
         phones_setup = json.loads(self.app.get("/phones").get_data())
         if len(phones_setup) > 0:
             response = self.app.delete('/phones', data=json.dumps(phones_setup),

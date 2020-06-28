@@ -3,7 +3,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 
 from routes import api_routes
 
-api = Flask(__name__)
+app = Flask(__name__)
 
 SWAGGER_URL = '/swagger'
 API_URL = '/static/swagger.json'
@@ -14,30 +14,30 @@ SWAGGERUI_BLUEPRINT = get_swaggerui_blueprint(
         'api_name': "telefonia_api"
     }
 )
-api.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
+app.register_blueprint(SWAGGERUI_BLUEPRINT, url_prefix=SWAGGER_URL)
 
-api.register_blueprint(api_routes.get_blueprint())
+app.register_blueprint(api_routes.get_blueprint())
 
 
-@api.route('/static/<path:path>')
+@app.route('/static/<path:path>')
 def send_static(path):
     return send_from_directory('static', path)
 
 
-@api.errorhandler(400)
+@app.errorhandler(400)
 def handle_400_error(_error):
     return make_response(jsonify({'error': 'Misunderstood'}), 400)
 
 
-@api.errorhandler(404)
+@app.errorhandler(404)
 def handle_404_error(_error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
 
-@api.errorhandler(500)
+@app.errorhandler(500)
 def handle_500_error(_error):
     return make_response(jsonify({'error': 'Server error'}), 500)
 
 
 if __name__ == "__main__":
-    api.run()
+    app.run()
