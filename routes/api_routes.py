@@ -29,26 +29,18 @@ def status():
 def get_all_phones():
     query_params = request.args.to_dict()
     if query_params:
-        # Try to convert the value to int
         query = {k: int(v) if isinstance(v, str) and v.isdigit() else v for k, v in query_params.items()}
 
-        # Fetch all the record(s)
         records_fetched = manager.verify_phones(query)
 
-        # Check if the records are found
         if records_fetched.count() > 0:
-            # Prepare the response
             return dumps(records_fetched)
         else:
-            # No records are found
             return "", 404
     else:
-        # Return all the records as query string parameters are not available
         if manager.count() > 0:
-            # Prepare response if the users are found
             return dumps(manager.get_all_phones())
         else:
-            # Return empty array if no users are found
             return jsonify([])
 
 
@@ -99,7 +91,7 @@ def unblock_phones():
             if len(record_deleted) == 0:
                 return dumps(record_deleted), 200
             else:
-                return jsonify([str(v) for v in record_deleted]), 200
+                return jsonify([v for v in record_deleted]), 200
         else:
             return jsonify(record_deleted), 200
     except KeyError:
@@ -108,7 +100,7 @@ def unblock_phones():
         return "", 500
 
 
-@api.route("/verify", methods=['GET'])
+@api.route("/verify", methods=['POST'])
 def verify_phones():
     try:
         try:
@@ -125,7 +117,7 @@ def verify_phones():
             if len(record_verified) == 0:
                 return dumps(record_verified), 200
             else:
-                return jsonify([str(v) for v in record_verified]), 200
+                return jsonify([v for v in record_verified]), 200
         else:
             return jsonify(record_verified), 200
     except KeyError:

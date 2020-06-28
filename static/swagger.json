@@ -2,30 +2,64 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Telefonia API",
-    "description": "Telefonia API for blocked phone numbers validations",
+    "description": "Telefonia API para gerenciamento de telefones bloqueados",
     "contact": {
       "email": "joaopedroguimaraes96@gmail.com"
-    },
-    "license": {
-      "name": "Apache 2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     },
     "version": "1.0.0"
   },
   "tags": [
     {
-      "name": "blocked_number",
-      "description": "Blocked numbers collection"
+      "name": "phones",
+      "description": "Telefones bloqueados"
+    },
+    {
+      "name": "verify",
+      "description": "Verificador de números bloqueados"
+    },
+    {
+      "name": "api",
+      "description": "Requisições sobre a API"
     }
   ],
   "paths": {
+    "/status": {
+      "get": {
+        "tags": [
+          "api"
+        ],
+        "summary": "Status de execução da API",
+        "description": "Requisição padrão para verificar o status de execução da API",
+        "operationId": "status",
+        "responses": {
+          "200": {
+            "description": "Sucesso, a API está executando normalmente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/phones": {
       "get": {
         "tags": [
-          "blocked_number"
+          "phones"
         ],
-        "summary": "Retrieves all blocked phone numbers",
-        "description": "Multiple status values can be provided with comma separated strings",
+        "summary": "Todos os números bloqueados",
+        "description": "Retorna todos os números anteriormente inseridos na blocklist",
         "operationId": "getAllPhones",
         "responses": {
           "200": {
@@ -42,19 +76,19 @@
             }
           },
           "400": {
-            "description": "Invalid status value",
+            "description": "JSON foi utilizado e de forma inválida",
             "content": {}
           }
         }
       },
       "post": {
         "tags": [
-          "blocked_number"
+          "phones"
         ],
-        "summary": "Add phone numbers to blocklist",
+        "summary": "Bloquear telefones",
         "operationId": "postBlockedPhones",
         "requestBody": {
-          "description": "Add a list of phones to blocklist",
+          "description": "Adicionar um telefone na blocklist",
           "content": {
             "application/json": {
               "schema": {
@@ -69,13 +103,100 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully blocked phone numbers",
+            "description": "Telefones bloqueados com sucesso, de acordo com \"blocked_status\" em cada caso retornado",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/blocked_phones_result"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON inválido ou vazio"
+          },
+          "500": {
+            "description": "Erro inesperado no servidor"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "phones"
+        ],
+        "summary": "Liberar telefones para o discador",
+        "operationId": "deleteBlockedPhones",
+        "requestBody": {
+          "description": "Remover os telefones listados da blocklist, para que eles não fiquem bloqueados",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/blocked_phones"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Telefones desbloqueados com sucesso, de acordo com \"blocked_status\"",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/unblocked_phones_result"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON inválido ou vazio"
+          },
+          "500": {
+            "description": "Erro inesperado no servidor"
+          }
+        }
+      }
+    },
+    "/verify": {
+      "post": {
+        "tags": [
+          "verify"
+        ],
+        "summary": "Verificar telefones bloqueados",
+        "description": "Verificar os telefones bloqueados de acordo com um JSON que liste todos os números a serem verificados",
+        "operationId": "verify",
+        "requestBody": {
+          "description": "Lista de telefones para verificar o status",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/blocked_phones"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Verificação dos telefones listados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/unblocked_phones_result"
                   }
                 }
               }
@@ -107,9 +228,6 @@
       },
       "blocked_phones_result": {
         "type": "object",
-        "required": [
-          "phone_number"
-        ],
         "properties": {
           "phone_number": {
             "type": "string",
@@ -121,6 +239,22 @@
               "blocked",
               "invalid_phone_number",
               "duplicated"
+            ]
+          }
+        }
+      },
+      "unblocked_phones_result": {
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "maxLength": 25
+          },
+          "blocked_status": {
+            "type": "string",
+            "enum": [
+              "unblocked",
+              "not_found"
             ]
           }
         }
