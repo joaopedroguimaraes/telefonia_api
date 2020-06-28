@@ -167,7 +167,7 @@
       }
     },
     "/verify": {
-      "get": {
+      "post": {
         "tags": [
           "verify"
         ],
