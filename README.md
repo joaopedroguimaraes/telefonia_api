@@ -129,7 +129,7 @@ Os arquivos `Procfile` e `runtime.txt` foram adicionados ao projeto para que o d
 pelo Heroku, e foi adicionado o `gunicorn` no arquivo `requirements.txt` como o WSGI HTTP Server.
 
 Para conferir o projeto, que está em produção, pode-se acessar: https://telefonia-api.herokuapp.com/. Por ele, 
-é possível também acessar a (documentação da API pelo Swagger)[https://telefonia-api.herokuapp.com/swagger].
+é possível também acessar a [documentação da API pelo Swagger](https://telefonia-api.herokuapp.com/swagger).
 
 #### Mais informações
 

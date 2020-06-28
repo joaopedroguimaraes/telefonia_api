@@ -1,3 +1,6 @@
+# TODO: migrar pra variáveis de ambiente
+#  pesquisar como fazer isso com o Heroku
+
 username = 'telefoniaapi'
 password = '7ptkrqtp2l2ELWmi'
 db_name = 'telefoniaapi_db'
