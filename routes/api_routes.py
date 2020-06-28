@@ -1,7 +1,7 @@
 import ast
 
 from bson.json_util import dumps
-from flask import Blueprint, json, request, jsonify
+from flask import Blueprint, json, request, jsonify, send_from_directory
 
 from manager import Manager
 
@@ -16,6 +16,10 @@ def get_blueprint():
 
 
 @api.route("/")
+def index():
+    return send_from_directory('static', 'index.html')
+
+
 @api.route("/status", methods=['GET'])
 def status():
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

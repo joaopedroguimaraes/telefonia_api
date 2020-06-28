@@ -20,8 +20,13 @@ class Manager:
             for phone_doc in phones:
                 # aqui é possível fazer validações
 
+                # validação de número
+                if self.__format_phone_number(phone_doc['phone_number']) == "":
+                    phone_doc['block_status'] = 'invalid_phone_number'
+                    continue
+
                 # validação de duplicidade de phone_number
-                if self.db.find_one(phone_doc) is None:
+                if self.db.find_one({'phone_number': self.__format_phone_number(phone_doc['phone_number'])}) is None:
                     self.db.insert({'phone_number': self.__format_phone_number(phone_doc['phone_number'])})
                     phone_doc['block_status'] = 'blocked'
                 else:
