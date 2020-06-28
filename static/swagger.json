@@ -181,7 +181,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/verified_phones"
+                  "$ref": "#/components/schemas/blocked_phones"
                 }
               }
             }
@@ -196,7 +196,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/unblocked_phones_result"
+                    "$ref": "#/components/schemas/verified_phones"
                   }
                 }
               }
