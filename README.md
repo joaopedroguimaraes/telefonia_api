@@ -25,12 +25,12 @@ O _pip_ se encarregará de instalar as bibliotecas nas versões especificadas pe
 
 ### Executando
 
-Para rodar a API, você deverá executar os seguintes comandos no seu terminal, sequencialmente.
+Para rodar a API, você deverá executar o seguinte comando no seu terminal.
 
 Lembre-se: é necessário ter o `venv` habilitado.
 
 ```
-Terminal 1:
+Terminal:
 
 python app.py
 ```
@@ -38,7 +38,7 @@ python app.py
 Ao rodar, deve aparecer o seguinte:
 
 ```
-Terminal 1:
+Terminal:
 
 > python app.py
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
