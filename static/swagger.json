@@ -1,0 +1,108 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Telefonia API",
+        "description": "Telefonia API for blocked phone numbers validations",
+        "contact": {
+            "email": "joaopedroguimaraes96@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "tags": [
+        {
+            "name": "blocked_number",
+            "description": "Blocked numbers collection"
+        }
+    ],
+    "paths": {
+        "/phones": {
+            "get": {
+                "tags": [
+                    "blocked_number"
+                ],
+                "summary": "Retrieves all blocked phone numbers",
+                "description": "Multiple status values can be provided with comma separated strings",
+                "operationId": "getAllPhones",
+                "responses": {
+                    "200": {
+                        "description": "Sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/blocked_number"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "content": {}
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "blocked_number"
+                ],
+                "summary": "Add phone numbers to blocklist",
+                "operationId": "postBlockedPhones",
+                "requestBody": {
+                    "description": "Add a list of phones to blocklist",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/blocked_number"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "400": {
+                        "description": "Invalid ID supplied",
+                        "content": {}
+                    },
+                    "404": {
+                        "description": "Pet not found",
+                        "content": {}
+                    },
+                    "405": {
+                        "description": "Validation exception",
+                        "content": {}
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "blocked_number": {
+                "type": "object",
+                "required": [
+                    "_id",
+                    "phone_number"
+                ],
+                "properties": {
+                    "_id": {
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "phone_number": {
+                        "type": "string",
+                        "maxLength": 25
+                    }
+                }
+            }
+        }
+    }
+}
