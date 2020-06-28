@@ -167,7 +167,7 @@
       }
     },
     "/verify": {
-      "post": {
+      "get": {
         "tags": [
           "verify"
         ],
@@ -181,7 +181,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/blocked_phones"
+                  "$ref": "#/components/schemas/verified_phones"
                 }
               }
             }
@@ -255,6 +255,22 @@
             "enum": [
               "unblocked",
               "not_found"
+            ]
+          }
+        }
+      },
+      "verified_phones": {
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "maxLength": 25
+          },
+          "blocked_status": {
+            "type": "string",
+            "enum": [
+              "blocked",
+              "not_blocked"
             ]
           }
         }
