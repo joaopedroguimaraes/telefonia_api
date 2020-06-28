@@ -17,7 +17,7 @@ def get_blueprint():
 
 @api.route("/")
 def index():
-    return api.send_static_file('index.html')
+    return send_from_directory('static', 'index.html')
 
 
 @api.route("/status", methods=['GET'])
