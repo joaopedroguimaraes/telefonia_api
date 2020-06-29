@@ -131,6 +131,15 @@ pelo Heroku, e foi adicionado o `gunicorn` no arquivo `requirements.txt` como o 
 Para conferir o projeto, que está em produção, pode-se acessar: https://telefonia-api.herokuapp.com/. Por ele, 
 é possível também acessar a [documentação da API pelo Swagger](https://telefonia-api.herokuapp.com/swagger).
 
+### Próximos passos
+
+Pensando na escalabilidade da API, pode chegar um momento em que o retorno das requisições conterá muitos casos. Para
+lidar com isso da forma mais elegante e simples, é necessária a paginação desses resultados.
+
+No arquivo `api_routes.py` há uma função chamada `__get_paginated_list`, que já implementa essa paginação de acordo
+com os argumentos que lhe forem passados. Para a sua implementação em todas as requisições, será necessário também
+atualizar os testes unitários, que hoje não esperam resultados paginados, assim como também o Swagger.
+
 #### Mais informações
 
 - [Flask](https://www.palletsprojects.com/p/flask/)

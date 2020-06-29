@@ -124,3 +124,24 @@ def verify_phones():
         return "", 400
     except:
         return "", 500
+
+
+def __get_paginated_list(obj_array, url, start, limit):
+    results = obj_array
+    count = len(results)
+    if count < start:
+        return 404
+    obj = {'start': start, 'limit': limit, 'count': count}
+    if start == 1:
+        obj['previous'] = ''
+    else:
+        start_copy = max(1, start - limit)
+        limit_copy = start - 1
+        obj['previous'] = url + '?start=%d&limit=%d' % (start_copy, limit_copy)
+    if start + limit > count:
+        obj['next'] = ''
+    else:
+        start_copy = start + limit
+        obj['next'] = url + '?start=%d&limit=%d' % (start_copy, limit)
+    obj['results'] = results[(start - 1):(start - 1 + limit)]
+    return obj
